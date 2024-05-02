@@ -1,9 +1,3 @@
-variable "create_budgets" {
-  description = "Create budgets"
-  type        = bool
-  default     = false
-}
-
 variable "aws_region" {
   description = "AWS region"
   type        = string
@@ -16,8 +10,8 @@ variable "budget_limit_amount" {
   default     = 100
 }
 
-variable "customer" {
-  description = "Name of the customer"
+variable "name" {
+  description = "Name of the budget"
   type        = string
 }
 
@@ -87,11 +81,6 @@ variable "budget_use_blended" {
   default     = false
 }
 
-variable "budget_subscriber_emails" {
-  description = "Budget subscriber emails"
-  type        = string
-}
-
 variable "budget_time_period_start" {
   description = "Time period start"
   type        = string
@@ -102,4 +91,15 @@ variable "budget_time_period_end" {
   description = "Time period end"
   type        = string
   default     = "2087-06-15_00:00"
+}
+
+variable "notification" {
+  description = "Notification list"
+  type        = list(any)
+}
+
+variable "sns_notification_enabled" {
+  description = "SNS notification enabled"
+  type        = bool
+  default     = false
 }

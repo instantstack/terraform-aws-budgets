@@ -1,7 +1,5 @@
 resource "aws_budgets_budget" "budget" {
-  count = var.create_budgets == true && var.aws_region == "us-east-1" ? 1 : 0
-
-  name              = "${var.customer}-account-monthly-${data.aws_caller_identity.current.account_id}"
+  name              = var.name
   budget_type       = "COST"
   limit_amount      = var.budget_limit_amount
   limit_unit        = "USD"
@@ -23,25 +21,15 @@ resource "aws_budgets_budget" "budget" {
     use_blended                = var.budget_use_blended
   }
 
-  notification {
-    comparison_operator        = "GREATER_THAN"
-    notification_type          = "ACTUAL"
-    subscriber_email_addresses = var.budget_subscriber_emails
-    threshold                  = 100
-    threshold_type             = "PERCENTAGE"
-  }
-  notification {
-    comparison_operator        = "GREATER_THAN"
-    notification_type          = "FORECASTED"
-    subscriber_email_addresses = var.budget_subscriber_emails
-    threshold                  = 100
-    threshold_type             = "PERCENTAGE"
-  }
-  notification {
-    comparison_operator        = "GREATER_THAN"
-    notification_type          = "FORECASTED"
-    subscriber_email_addresses = var.budget_subscriber_emails
-    threshold                  = 130
-    threshold_type             = "PERCENTAGE"
+  dynamic "notification" {
+    for_each = var.notification != null ? var.notification : []
+
+    content {
+      comparison_operator        = lookup(notification.value, "comparison_operator", "GREATER_THAN")
+      threshold                  = lookup(notification.value, "threshold", 100)
+      threshold_type             = lookup(notification.value, "threshold_type", "PERCENTAGE")
+      notification_type          = lookup(notification.value, "notification_type", "FORECASTED")
+      subscriber_email_addresses = lookup(notification.value, "subscriber_email_addresses", ["test"])
+    }
   }
 }
