@@ -21,6 +21,15 @@ resource "aws_budgets_budget" "budget" {
     use_blended                = var.budget_use_blended
   }
 
+  dynamic "cost_filter" {
+    for_each = var.cost_filter != null ? var.cost_filter : {}
+
+    content {
+      name   = cost_filter.key
+      values = cost_filter.value
+    }
+  }
+
   dynamic "notification" {
     for_each = var.notification != null ? var.notification : []
 

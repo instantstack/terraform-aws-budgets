@@ -92,6 +92,12 @@ variable "notification" {
   type        = list(any)
 }
 
+variable "cost_filter" {
+  description = "Cost filter"
+  type        = map(any)
+  default = {}
+}
+
 variable "sns_notification_enabled" {
   description = "SNS notification enabled"
   type        = bool
