@@ -25,7 +25,7 @@ locals {
 
 
 module "budget" {
-  source  = "instantstack/budgets"
+  source  = "instantstack/budgets/aws"
   version = "1.0.0"
 
   name                              = local.name
