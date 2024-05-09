@@ -89,3 +89,11 @@ No modules.
 |------|-------------|
 | <a name="output_budget_arn"></a> [budget\_arn](#output\_budget\_arn) | The ARN of the budget |
 | <a name="output_budget_id"></a> [budget\_id](#output\_budget\_id) | The ID of the budget |
+
+## Authors
+
+Module managed by [Bruno Dias](https://github.com/brunordias) and [Ian Soares](https://github.com/Ian-Soares).
+
+## License
+
+Apache 2 Licensed. See LICENSE for full details.
