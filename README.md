@@ -4,10 +4,7 @@ Terraform module for budgets alerts management
 ## Usage
 ```hcl
 locals {
-  name = "ec2"
-  cost_filter = {
-    "Service" = ["Amazon Elastic Compute Cloud - Compute"]
-  }
+  name = "monthly_budget"
   notification = [
     {
       "comparison_operator"        = "GREATER_THAN"
@@ -34,7 +31,6 @@ module "budget" {
   name                              = local.name
   budget_limit_amount               = 100
   budget_time_unit                  = "MONTHLY"
-  cost_filter                       = local.cost_filter
   notification                      = local.notification
 }
 ```
