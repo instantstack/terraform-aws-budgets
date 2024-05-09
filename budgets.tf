@@ -5,7 +5,7 @@ resource "aws_budgets_budget" "budget" {
   limit_unit        = "USD"
   time_period_end   = try(var.budget_time_period_end, "2087-06-15_00:00")
   time_period_start = try(var.budget_time_period_start, "2024-01-01_00:00")
-  time_unit         = "MONTHLY"
+  time_unit         = try(var.budget_time_unit, "MONTHLY")
 
   cost_types {
     include_credit             = var.budget_include_credit

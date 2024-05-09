@@ -1,14 +1,56 @@
 # terraform-aws-budgets
 Terraform module for budgets alerts management
+
+## Usage
+```hcl
+locals {
+  name = "ec2"
+  cost_filter = {
+    "Service" = ["Amazon Elastic Compute Cloud - Compute"]
+  }
+  notification = [
+    {
+      "comparison_operator"        = "GREATER_THAN"
+      "threshold"                  = 100
+      "threshold_type"             = "PERCENTAGE"
+      "notification_type"          = "ACTUAL"
+      "subscriber_email_addresses" = ["fakeemail@example.com"]
+    },
+    {
+      "comparison_operator"        = "GREATER_THAN"
+      "threshold"                  = 100
+      "threshold_type"             = "PERCENTAGE"
+      "notification_type"          = "FORECASTED"
+      "subscriber_email_addresses" = ["fakeemail@example.com"]
+    }
+  ]
+}
+
+
+module "budget" {
+  source  = "instantstack/budgets"
+  version = "1.0.0"
+
+  name                              = local.name
+  budget_limit_amount               = 100
+  budget_time_unit                  = "MONTHLY"
+  cost_filter                       = local.cost_filter
+  notification                      = local.notification
+}
+```
+
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 5.10.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.48.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.10.0 |
 
 ## Modules
 
@@ -18,8 +60,8 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_budgets_budget.budget](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/budgets_budget) | resource |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_budgets_budget.budget](https://registry.terraform.io/providers/hashicorp/aws/5.10.0/docs/resources/budgets_budget) | resource |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/5.10.0/docs/data-sources/caller_identity) | data source |
 
 ## Inputs
 
@@ -37,16 +79,17 @@ No modules.
 | <a name="input_budget_limit_amount"></a> [budget\_limit\_amount](#input\_budget\_limit\_amount) | Budget limit amount | `number` | `100` | no |
 | <a name="input_budget_time_period_end"></a> [budget\_time\_period\_end](#input\_budget\_time\_period\_end) | Time period end | `string` | `"2087-06-15_00:00"` | no |
 | <a name="input_budget_time_period_start"></a> [budget\_time\_period\_start](#input\_budget\_time\_period\_start) | Time period start | `string` | `"2024-01-01_00:00"` | no |
+| <a name="input_budget_time_unit"></a> [budget\_time\_unit](#input\_budget\_time\_unit) | Time unit | `string` | `"MONTHLY"` | no |
 | <a name="input_budget_use_amortized"></a> [budget\_use\_amortized](#input\_budget\_use\_amortized) | Use amortized | `bool` | `false` | no |
 | <a name="input_budget_use_blended"></a> [budget\_use\_blended](#input\_budget\_use\_blended) | Use blended | `bool` | `false` | no |
-| <a name="input_cost_filter"></a> [cost\_filter](#input\_cost\_filter) | Cost filter | `map(any)` | `{}` | no |
+| <a name="input_cost_filter"></a> [cost\_filter](#input\_cost\_filter) | Cost filter | `map(list(string))` | `{}` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the budget | `string` | n/a | yes |
-| <a name="input_notification"></a> [notification](#input\_notification) | Notification list | `list(any)` | n/a | yes |
-| <a name="input_sns_notification_enabled"></a> [sns\_notification\_enabled](#input\_sns\_notification\_enabled) | SNS notification enabled | `bool` | `false` | no |
+| <a name="input_notification"></a> [notification](#input\_notification) | Notification list | <pre>list(object({<br>      notification_type          = string<br>      comparison_operator        = string<br>      threshold                  = string<br>      threshold_type             = string<br>      subscriber_email_addresses = list(string)<br>    }))</pre> | n/a | yes |
+| <a name="input_sns_notification_enabled"></a> [sns\_notification\_enabled](#input\_sns\_notification\_enabled) | SNS notification enabled - Not implemented yet | `bool` | `false` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_budget_arn"></a> [budget\_arn](#output\_budget\_arn) | n/a |
-| <a name="output_budget_id"></a> [budget\_id](#output\_budget\_id) | n/a |
+| <a name="output_budget_arn"></a> [budget\_arn](#output\_budget\_arn) | The ARN of the budget |
+| <a name="output_budget_id"></a> [budget\_id](#output\_budget\_id) | The ID of the budget |
