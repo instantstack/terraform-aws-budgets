@@ -9,6 +9,23 @@ variable "budget_limit_amount" {
   }
 }
 
+variable "budget_type" {
+  description = "Budget type"
+  type        = string
+  default     = "COST"
+}
+
+variable "budget_limit_unit" {
+  description = "Budget limit unit"
+  type        = string
+  default     = "USD"
+
+  validation {
+    condition     = contains(["USD", "PERCENTAGE", "GB"], var.budget_limit_unit)
+    error_message = "Budget limit unit must be USD, PERCENTAGE or GB"
+  }
+}
+
 variable "name" {
   description = "Name of the budget"
   type        = string

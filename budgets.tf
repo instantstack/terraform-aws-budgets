@@ -1,8 +1,8 @@
 resource "aws_budgets_budget" "budget" {
   name              = var.name
-  budget_type       = "COST"
+  budget_type       = var.budget_type
   limit_amount      = var.budget_limit_amount
-  limit_unit        = "USD"
+  limit_unit        = var.budget_limit_unit
   time_period_end   = try(var.budget_time_period_end, "2087-06-15_00:00")
   time_period_start = try(var.budget_time_period_start, "2024-01-01_00:00")
   time_unit         = try(var.budget_time_unit, "MONTHLY")
