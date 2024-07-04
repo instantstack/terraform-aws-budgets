@@ -37,8 +37,8 @@ resource "aws_budgets_budget" "budget" {
       comparison_operator        = lookup(notification.value, "comparison_operator", "GREATER_THAN")
       threshold                  = lookup(notification.value, "threshold", 100)
       threshold_type             = lookup(notification.value, "threshold_type", "PERCENTAGE")
-      notification_type          = lookup(notification.value, "notification_type", "FORECASTED")
-      subscriber_email_addresses = lookup(notification.value, "subscriber_email_addresses", ["test"])
+      notification_type          = lookup(notification.value, "notification_type", "ACTUAL")
+      subscriber_email_addresses = notification.value.subscriber_email_addresses
     }
   }
 }
