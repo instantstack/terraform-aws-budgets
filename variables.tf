@@ -134,26 +134,7 @@ variable "notification" {
     threshold_type             = string
     subscriber_email_addresses = list(string)
   }))
-
-  validation {
-    condition     = contains(["GREATER_THAN", "LESS_THAN", "EQUAL_TO"], var.notification.0.comparison_operator)
-    error_message = "Comparison operator must be GREATER_THAN, LESS_THAN or EQUAL_TO"
-  }
-
-  validation {
-    condition     = contains(["PERCENTAGE", "ABSOLUTE_VALUE"], var.notification.0.threshold_type)
-    error_message = "Threshold type must be PERCENTAGE or ABSOLUTE_VALUE"
-  }
-
-  validation {
-    condition     = contains(["ACTUAL", "FORECASTED"], var.notification.0.notification_type)
-    error_message = "Notification type must be ACTUAL or FORECASTED"
-  }
-
-  validation {
-    condition     = length(var.notification.*.subscriber_email_addresses) > 0
-    error_message = "Subscriber email addresses must be provided"
-  }
+  default = []
 }
 
 variable "cost_filter" {
